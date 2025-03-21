@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from yatube_api.api.serializers import CommentSerializer, PostSerializer
-from yatube_api.posts.models import Comment, Post
+from api.serializers import CommentSerializer, PostSerializer
+from posts.models import Comment, Post
 
 
 class PostViewSet(viewsets.ModelViewSet):
