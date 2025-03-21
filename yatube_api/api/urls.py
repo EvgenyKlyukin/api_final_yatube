@@ -16,7 +16,6 @@ router_v1.register(
 )
 
 v1_urlpatterns = [
-    path('auth/', include('djoser.urls')),  # Для управления пользователями.
     path('', include('djoser.urls.jwt')),  # JWT-эндпоинты.
     path('', include(router_v1.urls)),
 ]
