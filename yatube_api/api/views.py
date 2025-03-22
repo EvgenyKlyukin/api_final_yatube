@@ -3,7 +3,7 @@ from rest_framework import viewsets
 
 from api.serializers import CommentSerializer, PostSerializer
 from api.permissions import IsAuthorOrReadOnly
-from posts.models import Comment, Post
+from posts.models import Group, Post
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -22,7 +22,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """ViewSet для работы с комментариями."""
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def get_post(self):
@@ -39,3 +38,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         пользователя и связывая его с постом.
         """
         serializer.save(author=self.request.user, post=self.get_post())
+
+
+class GroupsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = 
