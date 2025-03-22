@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
-from api.serializers import CommentSerializer, PostSerializer
+from api.serializers import CommentSerializer, GroupSerializer, PostSerializer
 from api.permissions import IsAuthorOrReadOnly
 from posts.models import Group, Post
 
@@ -42,4 +42,4 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class GroupsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
-    serializer_class = 
+    serializer_class = GroupSerializer
