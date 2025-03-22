@@ -18,8 +18,8 @@ Create and activate a virtual environment:
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # для Linux/MacOS
-venv\Scripts\activate     # для Windows
+source venv/bin/activate  # Linux/MacOS
+venv\Scripts\activate     # Windows
 ```
 
 Install the required dependencies:
@@ -92,7 +92,7 @@ python manage.py runserver
 | `limit` | `integer` | Number of publications per page |
 | `offset` | `integer` | The number of the page after which to start the output |
 
-
+---
 
 ```http
   GET /api/v1/posts/{id}/
