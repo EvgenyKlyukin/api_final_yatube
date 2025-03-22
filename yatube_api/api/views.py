@@ -41,5 +41,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class GroupsViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet для работы с группами."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
