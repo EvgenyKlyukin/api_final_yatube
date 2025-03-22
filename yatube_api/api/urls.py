@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from api.views import CommentViewSet, PostViewSet
+from api.views import CommentViewSet, GroupsViewSet, PostViewSet
 
 router_v1 = SimpleRouter()
 
@@ -9,6 +9,10 @@ router_v1.register(
     'posts',
     PostViewSet,
     basename='posts')
+router_v1.register(
+    'groups',
+    GroupsViewSet,
+    basename='groups')
 router_v1.register(
     r'^posts/(?P<post_id>\d+)/comments',
     CommentViewSet,
