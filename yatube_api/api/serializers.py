@@ -10,7 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
         slug_field='username',
         read_only=True
     )
-    image = serializers.CharField(max_length=255, allow_null=True)
+    image = serializers.ImageField(max_length=255, allow_null=True)
     group = serializers.IntegerField(allow_null=True)
 
     class Meta:

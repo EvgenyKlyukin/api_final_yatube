@@ -6,6 +6,19 @@ from posts.constants import TEXT_RESTRICTION
 User = get_user_model()
 
 
+class Group(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
+
+    def __str__(self):
+        return self.title[:TEXT_RESTRICTION]
+
+
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('Дата публикации',
@@ -16,6 +29,12 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/',
                               null=True,
                               blank=True)
+    group = models.ForeignKey(Group,
+                              on_delete=models.SET_NULL,
+                              null=True,
+                              blank=True,
+                              related_name='posts'
+                              )
 
     class Meta:
         verbose_name = 'Пост'
@@ -46,19 +65,6 @@ class Comment(models.Model):
     def __str__(self):
         return (f'Комментарий от {self.author.username} '
                 f'к посту "{self.post}"')
-
-
-class Group(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-
-    class Meta:
-        verbose_name = 'Группа'
-        verbose_name_plural = 'Группы'
-
-    def __str__(self):
-        return self.title[:TEXT_RESTRICTION]
 
 
 class Follow(models.Model):
