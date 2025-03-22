@@ -49,10 +49,8 @@ class Comment(models.Model):
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=200,
-                             related_name='groups')
-    slug = models.SlugField(unique=True,
-                            related_name='groups')
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     description = models.TextField()
 
     class Meta:
