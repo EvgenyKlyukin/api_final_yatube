@@ -64,14 +64,15 @@ class Group(models.Model):
 
 
 class Follow(models.Model):
-    user = models.OneToOneField(User,
-                                on_delete=models.CASCADE,
-                                related_name='follows')
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='followers')
     following = models.ForeignKey(User,
                                   on_delete=models.CASCADE,
-                                  related_name='follows')
+                                  related_name='following')
 
     class Meta:
+        unique_together = ('user', 'following')
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
 
