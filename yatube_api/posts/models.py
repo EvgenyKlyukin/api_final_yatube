@@ -8,11 +8,14 @@ User = get_user_model()
 
 class Post(models.Model):
     text = models.TextField()
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts')
-    image = models.ImageField(
-        upload_to='posts/', null=True, blank=True)
+    pub_date = models.DateTimeField('Дата публикации',
+                                    auto_now_add=True)
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               related_name='posts')
+    image = models.ImageField(upload_to='posts/',
+                              null=True,
+                              blank=True)
 
     class Meta:
         verbose_name = 'Пост'
@@ -24,13 +27,16 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments')
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               related_name='comments')
+    post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE,
+                             related_name='comments')
     text = models.TextField()
-    created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True)
+    created = models.DateTimeField('Дата добавления',
+                                   auto_now_add=True,
+                                   db_index=True)
 
     class Meta:
         verbose_name = 'Комментарий'
@@ -43,15 +49,11 @@ class Comment(models.Model):
 
 
 class Group(models.Model):
-    title = models.CharField(
-        max_length=200,
-        verbose_name='Заголовок'
-    )
-    slug = models.SlugField(
-        unique=True,
-        verbose_name='Уникальный идентификатор'
-    )
-    description = models.TextField(verbose_name='Описание')
+    title = models.CharField(max_length=200,
+                             related_name='groups')
+    slug = models.SlugField(unique=True,
+                            related_name='groups')
+    description = models.TextField()
 
     class Meta:
         verbose_name = 'Группа'
@@ -59,3 +61,20 @@ class Group(models.Model):
 
     def __str__(self):
         return self.title[:TEXT_RESTRICTION]
+
+
+class Follow(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                related_name='follows')
+    following = models.ForeignKey(User,
+                                  on_delete=models.CASCADE,
+                                  related_name='follows')
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return (f'Пользователь {self.user.username}'
+                f'подписан на: {self.following}')
