@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status, viewsets
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
 from api.serializers import (CommentSerializer, FollowSerializer,
@@ -12,6 +13,7 @@ class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с постами."""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         """
