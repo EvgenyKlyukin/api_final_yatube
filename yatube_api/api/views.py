@@ -4,10 +4,11 @@ from rest_framework.response import Response
 
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
+from api.mixins import ErrorHandlingMixin
 from posts.models import Follow, Group, Post, User
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с постами."""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -20,7 +21,7 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с комментариями."""
     serializer_class = CommentSerializer
 
@@ -40,13 +41,13 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, post=self.get_post())
 
 
-class GroupsViewSet(viewsets.ReadOnlyModelViewSet):
+class GroupsViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
     """ViewSet для работы с группами."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
-class FollowViewSet(viewsets.ReadOnlyModelViewSet):
+class FollowViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
     """ViewSet для работы с подписками."""
     queryset = Follow.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
