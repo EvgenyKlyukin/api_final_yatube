@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, permissions, viewsets
+from rest_framework import filters, mixins, permissions, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 
 from api.serializers import (CommentSerializer, FollowSerializer,
@@ -48,7 +48,10 @@ class GroupsViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = GroupSerializer
 
 
-class FollowViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
+class FollowViewSet(ErrorHandlingMixin,
+                    mixins.ListModelMixin,
+                    mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
     """ViewSet для работы с подписками."""
     serializer_class = FollowSerializer
     pagination_class = LimitOffsetPagination
