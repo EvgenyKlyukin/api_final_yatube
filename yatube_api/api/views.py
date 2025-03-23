@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import permissions, status, viewsets
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
@@ -51,29 +51,13 @@ class GroupsViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
 
 class FollowViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
     """ViewSet для работы с подписками."""
-    queryset = Follow.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = FollowSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('following__username',)
 
     def get_queryset(self):
-        """Возвращает все подписки пользователя, сделавшего запрос."""
-        return Follow.objects.filter(user=self.request.user)
+        return self.request.user.subscriptions.all()
 
-    def create(self, request, *args, **kwargs):
-        """Создает подписку на указанного пользователя."""
-        following_id = request.data.get('following')
-        following_user = get_object_or_404(User, id=following_id)
-
-        # Проверяем, не подписан ли уже пользователь
-        if Follow.objects.filter(user=request.user,
-                                 following=following_user).exists():
-            return Response(
-                {'error': 'Вы уже подписаны на этого пользователя.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Создаем подписку
-        follow = Follow.objects.create(user=request.user,
-                                       following=following_user)
-        serializer = self.get_serializer(follow)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
