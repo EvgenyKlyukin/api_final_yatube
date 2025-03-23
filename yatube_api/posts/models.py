@@ -70,15 +70,24 @@ class Comment(models.Model):
 class Follow(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             related_name='followers')
+                             related_name='subscriptions')
     following = models.ForeignKey(User,
                                   on_delete=models.CASCADE,
-                                  related_name='following')
+                                  related_name='followers')
 
     class Meta:
-        unique_together = ('user', 'following')
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('user', 'following'),
+                name='unique_subscribe'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('following')),
+                name='check_not_self_follow',
+            ),
+        )
 
     def __str__(self):
         return (f'Пользователь {self.user.username}'
