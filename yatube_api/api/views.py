@@ -54,7 +54,7 @@ class FollowViewSet(ErrorHandlingMixin,
                     mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
-    """ViewSet для работы с подписками."""
+    """ViewSet для работы с подписками пользователей."""
     serializer_class = FollowSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (filters.SearchFilter,)
@@ -62,9 +62,14 @@ class FollowViewSet(ErrorHandlingMixin,
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
+        """Возвращает список подписок текущего пользователя."""
         return self.request.user.subscriptions.all()
 
     def perform_create(self, serializer):
+        """
+        Создает новую подписку, проверяя, что пользователь не подписывается
+        на себя.
+        """
         if self.request.user == serializer.validated_data['following']:
             raise ValidationError(
                 {"following": ["Нельзя подписаться на самого себя!"]}
@@ -72,6 +77,7 @@ class FollowViewSet(ErrorHandlingMixin,
         serializer.save(user=self.request.user)
 
     def handle_exception(self, exc):
+        """Обрабатывает исключения, возвращая соответствующий ответ."""
         if isinstance(exc, ValidationError):
             return Response(
                 exc.detail,
