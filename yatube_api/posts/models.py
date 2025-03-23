@@ -39,7 +39,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
-        default_related_name = 'posts'
+        ordering = ('-pub_date',)
 
     def __str__(self):
         return self.text[:TEXT_RESTRICTION]
