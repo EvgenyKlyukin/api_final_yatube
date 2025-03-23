@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, permissions, viewsets
+from rest_framework import filters, mixins, permissions, status, viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.response import Response
 
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
@@ -64,3 +66,14 @@ class FollowViewSet(ErrorHandlingMixin,
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ValidationError):
+            return Response(
+                {
+                    "following": ["Обязательное поле."]
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().handle_exception(exc)
