@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
 from api.mixins import ErrorHandlingMixin
-from posts.models import Follow, Group, Post
+from posts.models import Group, Post
 
 
 class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
@@ -62,17 +62,19 @@ class FollowViewSet(ErrorHandlingMixin,
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return Follow.objects.filter(user=self.request.user)
+        return self.request.user.subscriptions.all()
 
     def perform_create(self, serializer):
+        if self.request.user == serializer.validated_data['following']:
+            raise ValidationError(
+                {"following": ["Нельзя подписаться на самого себя!"]}
+            )
         serializer.save(user=self.request.user)
 
     def handle_exception(self, exc):
         if isinstance(exc, ValidationError):
             return Response(
-                {
-                    "following": ["Обязательное поле."]
-                },
+                exc.detail,
                 status=status.HTTP_400_BAD_REQUEST
             )
 
