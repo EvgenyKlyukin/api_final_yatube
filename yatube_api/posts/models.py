@@ -28,7 +28,6 @@ class Post(models.Model):
                                     verbose_name='Дата публикации')
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name='posts',
                                verbose_name='Автор')
     image = models.ImageField(upload_to='posts/',
                               null=True, blank=True,
@@ -37,13 +36,13 @@ class Post(models.Model):
                               on_delete=models.SET_NULL,
                               null=True,
                               blank=True,
-                              related_name='posts',
                               verbose_name='Группа')
 
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
         ordering = ('-pub_date',)
+        default_related_name = 'posts'
 
     def __str__(self):
         return self.text[:TEXT_RESTRICTION]
