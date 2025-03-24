@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
 from api.mixins import ErrorHandlingMixin
+from api.permissions import IsAuthorOrReadOnly
 from posts.models import Group, Post
 
 
@@ -16,6 +17,7 @@ class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = LimitOffsetPagination
+    permission_classes = (IsAuthorOrReadOnly,)
 
     def perform_create(self, serializer):
         """
@@ -29,6 +31,7 @@ class CommentViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с комментариями."""
 
     serializer_class = CommentSerializer
+    permission_classes = (IsAuthorOrReadOnly,)
 
     def get_post(self):
         """Возвращает пост, к которому относятся комментарии."""
@@ -51,6 +54,7 @@ class GroupsViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
 
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (permissions.AllowAny,)
 
 
 class FollowViewSet(ErrorHandlingMixin, mixins.ListModelMixin,
@@ -58,10 +62,10 @@ class FollowViewSet(ErrorHandlingMixin, mixins.ListModelMixin,
     """ViewSet для работы с подписками пользователей."""
 
     serializer_class = FollowSerializer
+    permission_classes = (permissions.IsAuthenticated,)
     pagination_class = LimitOffsetPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('following__username',)
-    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         """Возвращает список подписок текущего пользователя."""
@@ -72,10 +76,6 @@ class FollowViewSet(ErrorHandlingMixin, mixins.ListModelMixin,
         Создает новую подписку, проверяя, что пользователь не подписывается
         на себя.
         """
-        if self.request.user == serializer.validated_data['following']:
-            raise ValidationError(
-                {"following": ["Нельзя подписаться на самого себя!"]}
-            )
         serializer.save(user=self.request.user)
 
     def handle_exception(self, exc):

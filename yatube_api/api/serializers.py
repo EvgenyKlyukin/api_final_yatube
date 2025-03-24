@@ -10,6 +10,7 @@ User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Post."""
+
     author = SlugRelatedField(
         slug_field='username',
         read_only=True
@@ -22,6 +23,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Comment."""
+
     author = serializers.SlugRelatedField(
         read_only=True,
         slug_field='username'
@@ -43,6 +45,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class FollowSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Follow."""
+
     user = serializers.SlugRelatedField(
         read_only=True,
         slug_field='username',
@@ -70,13 +73,3 @@ class FollowSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Нельзя подписаться на самого себя!')
         return following
-
-    def validate(self, attrs):
-        following_username = attrs.get('following')
-        if not User.objects.filter(username=following_username).exists():
-            raise serializers.ValidationError({
-                "following": [
-                    f"Объект с username={following_username} не существует."
-                ]
-            })
-        return attrs
