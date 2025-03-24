@@ -12,6 +12,7 @@ from posts.models import Group, Post
 
 class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с постами."""
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = LimitOffsetPagination
@@ -26,6 +27,7 @@ class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
 
 class CommentViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с комментариями."""
+
     serializer_class = CommentSerializer
 
     def get_post(self):
@@ -46,15 +48,15 @@ class CommentViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
 
 class GroupsViewSet(ErrorHandlingMixin, viewsets.ReadOnlyModelViewSet):
     """ViewSet для работы с группами."""
+
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
-class FollowViewSet(ErrorHandlingMixin,
-                    mixins.ListModelMixin,
-                    mixins.CreateModelMixin,
-                    viewsets.GenericViewSet):
+class FollowViewSet(ErrorHandlingMixin, mixins.ListModelMixin,
+                    mixins.CreateModelMixin, viewsets.GenericViewSet):
     """ViewSet для работы с подписками пользователей."""
+
     serializer_class = FollowSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (filters.SearchFilter,)
