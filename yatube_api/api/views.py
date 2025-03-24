@@ -17,7 +17,8 @@ class PostViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthorOrReadOnly,
+                          permissions.IsAuthenticatedOrReadOnly)
 
     def perform_create(self, serializer):
         """
@@ -31,7 +32,8 @@ class CommentViewSet(ErrorHandlingMixin, viewsets.ModelViewSet):
     """ViewSet для работы с комментариями."""
 
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthorOrReadOnly,
+                          permissions.IsAuthenticatedOrReadOnly)
 
     def get_post(self):
         """Возвращает пост, к которому относятся комментарии."""

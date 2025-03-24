@@ -6,13 +6,6 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
     message = 'У вас недостаточно прав для выполнения данного действия.'
 
-    def has_permission(self, request, view):
-        """Разрешение проверяет подлинность пользователя."""
-        return (
-            request.method in permissions.SAFE_METHODS
-            or request.user.is_authenticated
-        )
-
     def has_object_permission(self, request, view, obj):
         """
         Если пользователь не является автором, то разрешены только безопасные
