@@ -1,6 +1,5 @@
 
 ## Description
----
 This project is a RESTful API for the social network Yatube, which allows users to create posts, comment on them, subscribe to other users, and view their subscription feed. The API is developed in accordance with the documentation available at `http://127.0.0.1:8000/redoc/`. The documentation serves as the technical specification for implementing the functionality.
 
 ## Project status
