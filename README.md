@@ -3,17 +3,14 @@
 This project is a RESTful API for the social network Yatube, which allows users to create posts, comment on them, subscribe to other users, and view their subscription feed. The API is developed in accordance with the documentation available at `http://127.0.0.1:8000/redoc/`. The documentation serves as the technical specification for implementing the functionality.
 
 ## Project status
----
 This project is the final one in the framework of the API sprint (Yandex Workshop). The project was completed in March 2025.
 
 ## Tech Stack
----
 - Django==3.2.16
 - djangorestframework==3.12.4
 - PyJWT + djoser
 
 ## Install
----
 Clone the repository to your computer:
 
 ```bash
@@ -46,7 +43,6 @@ Start the server:
 python manage.py runserver
 ```
 ## API
----
 #### Key Features of the API:
 - Create, edit, and delete posts.
 - Add and delete comments on posts.
@@ -72,7 +68,6 @@ python manage.py runserver
 
 
 ## Examples
----
 ### GET posts/
 
 ```http
@@ -125,7 +120,6 @@ python manage.py runserver
 
 
 ## Running Tests
----
 ### Preparing the Django Project
 
 The file `API_for_yatube.postman_collection.json` contains a Postman collection—a set of pre-prepared requests to test the API functionality.
@@ -158,5 +152,4 @@ bash set_up_data.sh
 **Before running the collection again, make sure to re-run the bash script—it will clear the database and recreate the necessary fixtures.**
 
 ## Author
----
 - [Evgeny Klyukin](https://github.com/EvgenyKlyukin) — основной разработчик.
