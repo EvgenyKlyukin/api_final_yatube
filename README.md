@@ -68,7 +68,7 @@ python manage.py runserver
 
 
 ## Examples
-### GET posts/
+#### GET posts/
 
 ```http
   GET /api/v1/posts/
@@ -97,7 +97,7 @@ python manage.py runserver
 | `limit` | `integer` | Number of publications per page |
 | `offset` | `integer` | The number of the page after which to start the output |
 
-### GET posts/{id}/
+#### GET posts/{id}/
 
 ```http
   GET /api/v1/posts/{id}/
