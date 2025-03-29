@@ -152,4 +152,4 @@ bash set_up_data.sh
 **Before running the collection again, make sure to re-run the bash script—it will clear the database and recreate the necessary fixtures.**
 
 ## Author
-- [Evgeny Klyukin](https://github.com/EvgenyKlyukin) — основной разработчик.
+- [Evgeny Klyukin](https://github.com/EvgenyKlyukin) — the main developer.
